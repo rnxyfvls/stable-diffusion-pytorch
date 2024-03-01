@@ -40,7 +40,7 @@ seed = 12345
 prompt = '1girl,living room,silver leotard,navel,bunny girl,cute,silver hairs,black eyes,cleavage,(leaning_forward:1.6),cafe,black stocking,papilla,all fours'
 negativePrompt = 'bad anatomy,bad hands,missing fingers,extra fingers,three hands,three legs,bad arms,missing legs,missing arms,poorly drawn face,bad face,fused face,cloned face,three crus,fused feet,fused thigh,extra crus,ugly fingers,horn,realistic photo,huge eyes,worst face,2girl,long fingers,disconnected limbs,worst quality,normal quality,low quality,low res,blurry,text,watermark,logo,banner,extra digits,cropped,jpeg artifacts,signature,username,error,sketch ,duplicate,ugly,monochrome,horror,geometry,mutation,disgusting'
 
-fileName = prompt.replace(' ', '_').replace('\\', '＼').replace(',', '-') + '.' + str(seed) + '.png'
+fileName = prompt.replace(' ', '_').replace('\\', '＼').replace(':', '⦂').replace(',', '-') + '.' + str(seed) + '.png'
 
 images = pipeline.generate([prompt], uncond_prompts=[negativePrompt],
 			models=models, n_inference_steps=steps, seed=seed, device=device,
