@@ -202,3 +202,4 @@ data/
 ddata/
 migrators/
 data.*.tar
+out/
