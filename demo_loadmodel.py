@@ -14,7 +14,7 @@ device = 'xpu'
 outDir = './out'
 
 # path to SD 1.4/1.5 based model safetensors file
-modelPath = '/stor/download2/anything_inkBase.safetensors'
+modelPath = '/stor/download2/anything_inkBase.safetensors' # download from https://civitai.com/models/9409?modelVersionId=90854
 
 # if true, use float16, otherwise float32
 useHalfPrecision = True
