@@ -34,7 +34,7 @@ def make_compatible(state_dict):
 # The following functions load the default models, used when the user supplied `models` is missing
 # one or more of (clip, encoder, decoder, diffusion).
 
-def load_clip(device, dtype):
+def load_clip(device, dtype=torch.float32):
     state_dict = torch.load(util.get_file_path('ckpt/clip.pt'))
     state_dict = make_compatible(state_dict)
 
@@ -42,7 +42,7 @@ def load_clip(device, dtype):
     clip.load_state_dict(state_dict)
     return clip
 
-def load_encoder(device, dtype):
+def load_encoder(device, dtype=torch.float32):
     state_dict = torch.load(util.get_file_path('ckpt/encoder.pt'))
     state_dict = make_compatible(state_dict)
 
@@ -50,7 +50,7 @@ def load_encoder(device, dtype):
     encoder.load_state_dict(state_dict)
     return encoder
 
-def load_decoder(device, dtype):
+def load_decoder(device, dtype=torch.float32):
     state_dict = torch.load(util.get_file_path('ckpt/decoder.pt'))
     state_dict = make_compatible(state_dict)
 
@@ -58,7 +58,7 @@ def load_decoder(device, dtype):
     decoder.load_state_dict(state_dict)
     return decoder
 
-def load_diffusion(device, dtype):
+def load_diffusion(device, dtype=torch.float32):
     state_dict = torch.load(util.get_file_path('ckpt/diffusion.pt'))
     state_dict = make_compatible(state_dict)
 

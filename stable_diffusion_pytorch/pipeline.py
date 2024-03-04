@@ -58,6 +58,8 @@ def generate(
             expense of slower inference. This parameter will be modulated by `strength`.
         models (`Dict[str, torch.nn.Module]`, *optional*):
             Preloaded models. If some or all models are not provided, they will be loaded dynamically.
+            Note that auto-loaded modules default to float32, so if you are using float16 models, you must
+            provide all 4 models.
         seed (`int`, *optional*):
             A seed to make generation deterministic.
         device (`str` or `torch.device`, *optional*):
