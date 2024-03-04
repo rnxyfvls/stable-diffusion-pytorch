@@ -3,42 +3,10 @@ import safetensors.torch
 from . import Tokenizer, CLIP, Encoder, Decoder, Diffusion
 
 r"""
-    Create the 4 models that the pipeline expects and load the weights from state_dicts (not an original stable diffusion state_dict!).
-    Args:
-        state_dicts (`Dict[str, str]`):
-            A dict with 4 keys: clip, encoder, decoder, diffusion; each key's value is a dict of weights for that model.
-            You can pass in the dict returned by split_state_dict().
-        device (`str`):
-            The device to run the models on, passed to model.to()
-        useHalfPrecision (`bool`, *optional*):
-            If true, use float16, otherwise float32.
-    Returns:
-        `Dict[str, torch.nn.Module]`:
-            The loaded models to be passed to pipeline.generate()
-    """
-def load_models(state_dicts, device, useHalfPrecision=False):
-    models = {}
-    if useHalfPrecision:
-        models['clip'] = CLIP().to(device).half()
-        models['encoder'] = Encoder().to(device).half()
-        models['decoder'] = Decoder().to(device).half()
-        models['diffusion'] = Diffusion().to(device).half()
-    else:
-        models['clip'] = CLIP().to(device)
-        models['encoder'] = Encoder().to(device)
-        models['decoder'] = Decoder().to(device)
-        models['diffusion'] = Diffusion().to(device)
-
-    models['clip'].load_state_dict(state_dicts['clip'])
-    models['encoder'].load_state_dict(state_dicts['encoder'])
-    models['decoder'].load_state_dict(state_dicts['decoder'])
-    models['diffusion'].load_state_dict(state_dicts['diffusion'])
-    return models
-
-r"""
     Our library model implementation is laid out differently from the original stable diffusion, so
     original SD state_dict can not be directly loaded. This function converts an original SD
-    state_dict to the 4 state_dicts (clip, encoder, decoder, diffusion) that our models expect.
+    state_dict to the 4 state_dicts (clip, encoder, decoder, diffusion) that can be passed to
+    model_loader.load_models()
     Args:
         state_dict (`Dict[str, str]`):
             The original state_dict to convert.

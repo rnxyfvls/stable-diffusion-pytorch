@@ -202,4 +202,5 @@ data/
 ddata/
 migrators/
 data.*.tar
+sd-v1-5.safetensors
 out/
