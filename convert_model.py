@@ -2,7 +2,7 @@ import argparse
 import safetensors.torch
 from stable_diffusion_pytorch import convert_from_sdmodel
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description='Convert an original stable diffusion checkpoint file in safetensor format to 4 separate safetensors for this library.')
 parser.add_argument(
     "--sd_model", type=str, required=True,
     help="Stable Diffusion model to load in safetensors format"
