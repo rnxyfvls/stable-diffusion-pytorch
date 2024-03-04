@@ -107,6 +107,9 @@ def generate(
         tokenizer = Tokenizer()
         clip = models.get('clip') or model_loader.load_clip(device)
         clip.to(device)
+
+        # use the dtype of the model weights as our dtype
+        dtype = clip.embedding.position_value.dtype
         if do_cfg:
             cond_tokens = tokenizer.encode_batch(prompts)
             cond_tokens = torch.tensor(cond_tokens, dtype=torch.long, device=device)
@@ -148,7 +151,7 @@ def generate(
 
                 input_image = input_image.resize((width, height))
                 input_image = np.array(input_image)
-                input_image = torch.tensor(input_image, dtype=torch.float32)
+                input_image = torch.tensor(input_image, dtype=dtype)
                 input_image = util.rescale(input_image, (0, 255), (-1, 1))
                 processed_input_images.append(input_image)
             input_images_tensor = torch.stack(processed_input_images).to(device)
@@ -157,17 +160,17 @@ def generate(
             _, _, height, width = input_images_tensor.shape
             noise_shape = (len(prompts), 4, height // 8, width // 8)
 
-            encoder_noise = torch.randn(noise_shape, generator=generator, device=device)
+            encoder_noise = torch.randn(noise_shape, generator=generator, device=device, dtype=dtype)
             latents = encoder(input_images_tensor, encoder_noise)
 
-            latents_noise = torch.randn(noise_shape, generator=generator, device=device)
+            latents_noise = torch.randn(noise_shape, generator=generator, device=device, dtype=dtype)
             sampler.set_strength(strength=strength)
             latents += latents_noise * sampler.initial_scale
 
             to_idle(encoder)
             del encoder, processed_input_images, input_images_tensor, latents_noise
         else:
-            latents = torch.randn(noise_shape, generator=generator, device=device)
+            latents = torch.randn(noise_shape, generator=generator, device=device, dtype=dtype)
             latents *= sampler.initial_scale
 
         diffusion = models.get('diffusion') or model_loader.load_diffusion(device)
@@ -175,7 +178,7 @@ def generate(
 
         timesteps = tqdm(sampler.timesteps)
         for i, timestep in enumerate(timesteps):
-            time_embedding = util.get_time_embedding(timestep).to(device)
+            time_embedding = util.get_time_embedding(timestep, dtype).to(device)
 
             input_latents = latents * sampler.get_input_scale()
             if do_cfg:
