@@ -95,6 +95,21 @@ prompts = ["a photograph of an astronaut riding a horse"]
 images = pipeline.generate(prompts, models=models, device='cuda', idle_device='cpu')
 ```
 
+Load an original stable diffusion model in safetensors format:
+```py
+import safetensors.torch
+from stable_diffusion_pytorch import convert_from_sdmodel, model_loader
+
+# load the checkpoint file
+state_dict = safetensors.torch.load_file('/PATH/TO/sd-v1-5.safetensors')
+
+# split the state_dict into the 4 state_dicts for our models
+state_dicts = convert_from_sdmodel.split_state_dict(state_dict)
+
+# create the model objects, and apply the weights in state_dicts
+models = model_loader.load_models(state_dicts, 'cpu')
+```
+
 Image-to-image generation:
 ```py
 from PIL import Image
