@@ -40,7 +40,7 @@ negativePrompt = 'bad anatomy,bad hands,missing fingers,extra fingers'
 fileName = prompt.replace(' ', '_').replace('\\', '＼').replace(':', '⦂').replace(',', '-') + '.' + str(seed) + '.png'
 
 images = pipeline.generate([prompt], uncond_prompts=[negativePrompt],
-			models=models, n_inference_steps=steps, seed=seed, device=device,
-			height=768, width=512)
+            models=models, n_inference_steps=steps, seed=seed, device=device,
+            height=768, width=512)
 
 images[0].save(outDir + '/' + fileName)
